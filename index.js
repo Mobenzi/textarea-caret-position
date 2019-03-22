@@ -1,6 +1,6 @@
 /* jshint browser: true */
 
-(function () {
+export default {
 
 // We'll copy the properties below into the mirror div.
 // Note that some browsers, such as Firefox, do not concatenate properties
@@ -152,4 +152,4 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
   window.getCaretCoordinates = getCaretCoordinates;
 }
 
-}());
+};
