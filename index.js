@@ -1,12 +1,12 @@
 /* jshint browser: true */
 
-(function () {
+export default {
 
 // We'll copy the properties below into the mirror div.
 // Note that some browsers, such as Firefox, do not concatenate properties
 // into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
 // so we have to list every single property explicitly.
-var properties = [
+properties : [
   'direction',  // RTL support
   'boxSizing',
   'width',  // on Chrome and IE, exclude the scrollbar, so the mirror div wraps exactly as the textarea does
@@ -46,13 +46,13 @@ var properties = [
   'tabSize',
   'MozTabSize'
 
-];
+],
 
-var isBrowser = (typeof window !== 'undefined');
-var isFirefox = (isBrowser && window.mozInnerScreenX != null);
+isBrowser : (typeof window !== 'undefined'),
+isFirefox : (this.isBrowser && window.mozInnerScreenX != null),
 
-function getCaretCoordinates(element, position, options) {
-  if (!isBrowser) {
+getCaretCoordinates : function(element, position, options) {
+  if (!this.isBrowser) {
     throw new Error('textarea-caret-position#getCaretCoordinates should only be called in a browser');
   }
 
@@ -82,7 +82,7 @@ function getCaretCoordinates(element, position, options) {
     style.visibility = 'hidden';  // not 'display: none' because we want rendering
 
   // Transfer the element's properties to the div
-  properties.forEach(function (prop) {
+  this.properties.forEach(function (prop) {
     if (isInput && prop === 'lineHeight') {
       // Special case for <input>s because text is rendered centered and line height may be != height
       if (computed.boxSizing === "border-box") {
@@ -108,7 +108,7 @@ function getCaretCoordinates(element, position, options) {
     }
   });
 
-  if (isFirefox) {
+  if (this.isFirefox) {
     // Firefox lies about the overflow property for textareas: https://bugzilla.mozilla.org/show_bug.cgi?id=984275
     if (element.scrollHeight > parseInt(computed.height))
       style.overflowY = 'scroll';
@@ -146,10 +146,4 @@ function getCaretCoordinates(element, position, options) {
   return coordinates;
 }
 
-if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
-  module.exports = getCaretCoordinates;
-} else if(isBrowser) {
-  window.getCaretCoordinates = getCaretCoordinates;
-}
-
-}());
+};
