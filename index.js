@@ -2,11 +2,12 @@
 
 export default {
 
-// We'll copy the properties below into the mirror div.
+getCaretCoordinates : function(element, position, options) {
+	// We'll copy the properties below into the mirror div.
 // Note that some browsers, such as Firefox, do not concatenate properties
 // into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
 // so we have to list every single property explicitly.
-properties : [
+	var properties = [
   'direction',  // RTL support
   'boxSizing',
   'width',  // on Chrome and IE, exclude the scrollbar, so the mirror div wraps exactly as the textarea does
@@ -46,15 +47,7 @@ properties : [
   'tabSize',
   'MozTabSize'
 
-],
-
-isBrowser : (typeof window !== 'undefined'),
-isFirefox : (this.isBrowser && window.mozInnerScreenX != null),
-
-getCaretCoordinates : function(element, position, options) {
-  if (!this.isBrowser) {
-    throw new Error('textarea-caret-position#getCaretCoordinates should only be called in a browser');
-  }
+];
 
   var debug = options && options.debug || false;
   if (debug) {
@@ -82,7 +75,7 @@ getCaretCoordinates : function(element, position, options) {
     style.visibility = 'hidden';  // not 'display: none' because we want rendering
 
   // Transfer the element's properties to the div
-  this.properties.forEach(function (prop) {
+  properties.forEach(function (prop) {
     if (isInput && prop === 'lineHeight') {
       // Special case for <input>s because text is rendered centered and line height may be != height
       if (computed.boxSizing === "border-box") {
@@ -108,7 +101,7 @@ getCaretCoordinates : function(element, position, options) {
     }
   });
 
-  if (this.isFirefox) {
+  if (window.mozInnerScreenX != null) {
     // Firefox lies about the overflow property for textareas: https://bugzilla.mozilla.org/show_bug.cgi?id=984275
     if (element.scrollHeight > parseInt(computed.height))
       style.overflowY = 'scroll';
